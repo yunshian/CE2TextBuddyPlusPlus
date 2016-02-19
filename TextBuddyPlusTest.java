@@ -73,6 +73,16 @@ public class TextBuddyPlusTest extends TextBuddy {
 	}
 	
 	@Test
+	public void testSearchTextIgnoringCase(){
+		TextBuddy.addText("corn");
+		TextBuddy.addText("barrel");
+		TextBuddy.addText("airport");
+		TextBuddy.addText("Aircorn");
+		output = TextBuddy.searchText("air");
+		assertEquals("List of texts containing air:\n3. airport\n4. Aircorn\n",output);
+	}
+	
+	@Test
 	public void testSearchEmptyList(){
 		output = TextBuddy.searchText("hello");
 		assertEquals(MESSAGE_EMPTY,output);
