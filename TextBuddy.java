@@ -42,6 +42,8 @@ import java.io.*;
  	   Eg. ADD, add, Add
  	   
  	5. Sorting Command -- Sorting will ignore upper and lower case
+ 	
+ 	6. Search Command -- Searching will ignore upper and lower case
  */
 
 public class TextBuddy {
@@ -291,7 +293,7 @@ public class TextBuddy {
 			int index = i + 1;
 			String text = allTexts.get(i);
 			
-			if(text.contains(keyword)) {
+			if(text.toLowerCase().contains(keyword.toLowerCase())) {
 				mergeTexts = mergeTexts + index + ". " + allTexts.get(i)+ "\n";
 			}
 		}
