@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TextBuddyPlusTest extends TextBuddy {
@@ -9,7 +10,7 @@ public class TextBuddyPlusTest extends TextBuddy {
 	
 	// Messages for user
 	private static final String MESSAGE_EMPTY = "testFile.txt is empty.";
-
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// set up TextBuddy
@@ -17,25 +18,35 @@ public class TextBuddyPlusTest extends TextBuddy {
 		TextBuddy.filename = filename;
 	}
 	
-	@Test
-	public void testAddText(){
-		TextBuddy.executeCommand("clear");
-		TextBuddy.executeCommand("add c");
-		TextBuddy.executeCommand("add b");
-		TextBuddy.executeCommand("add a");
-		output = TextBuddy.executeCommand("Display");
-		assertEquals("1. c\n2. b\n3. a",output);
+	@Before
+	public void clearBeforeTest(){
+		// Clear text before each test case
+		TextBuddy.clearText();
 	}
 	
 	@Test
-	public void testSortText(){
-		TextBuddy.executeCommand("sort");
-		output = TextBuddy.executeCommand("Display");
-		assertEquals("1. a\n2. b\n3. c",output);
-		
-		output = TextBuddy.sortText();
-		assertEquals(MESSAGE_EMPTY,output);
-		
+	public void testAddText(){
+		TextBuddy.addText("corn");
+		TextBuddy.addText("barrel");
+		TextBuddy.addText("airport");
+		TextBuddy.addText("apple");
+		output = TextBuddy.displayText();
+		assertEquals("1. corn\n2. barrel\n3. airport\n4. apple",output);
+	}
+	
+	@Test
+	public void testSortText(){		
+		TextBuddy.addText("corn");
+		TextBuddy.addText("barrel");
+		TextBuddy.addText("airport");
+		TextBuddy.addText("apple");
+		TextBuddy.sortText();
+		output = TextBuddy.displayText();
+		assertEquals("1. airport\n2. apple\n3. barrel\n4. corn",output);
+	}
+	
+	@Test
+	public void testCaseInsenstitiveSortText(){		
 		TextBuddy.addText("corn");
 		TextBuddy.addText("barrel");
 		TextBuddy.addText("Airport");
@@ -43,5 +54,11 @@ public class TextBuddyPlusTest extends TextBuddy {
 		TextBuddy.sortText();
 		output = TextBuddy.displayText();
 		assertEquals("1. Airport\n2. apple\n3. barrel\n4. corn",output);
+	}
+	
+	@Test
+	public void testSortEmptyList(){	
+		output = TextBuddy.sortText();
+		assertEquals(MESSAGE_EMPTY,output);
 	}
 }
