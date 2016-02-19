@@ -32,5 +32,16 @@ public class TextBuddyPlusTest extends TextBuddy {
 		TextBuddy.executeCommand("sort");
 		output = TextBuddy.executeCommand("Display");
 		assertEquals("1. a\n2. b\n3. c",output);
+		
+		output = TextBuddy.sortText();
+		assertEquals(MESSAGE_EMPTY,output);
+		
+		TextBuddy.addText("corn");
+		TextBuddy.addText("barrel");
+		TextBuddy.addText("Airport");
+		TextBuddy.addText("apple");
+		TextBuddy.sortText();
+		output = TextBuddy.displayText();
+		assertEquals("1. Airport\n2. apple\n3. barrel\n4. corn",output);
 	}
 }
