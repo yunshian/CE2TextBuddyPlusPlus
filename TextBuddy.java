@@ -57,7 +57,7 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE = "deleted from %s: \"%s\".";
 	private static final String MESSAGE_CLEAR = "all content deleted from %s.";
 	private static final String MESSAGE_EMPTY = "%s is empty.";
-	
+
 	// Commands
 	private static final String ADD = "add";
 	private static final String DISPLAY = "display";
@@ -67,8 +67,8 @@ public class TextBuddy {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private static ArrayList <String> allTexts = new ArrayList<String>();
-	private static String filename;
 	private static String command;
+	public static String filename;
 	
 	public static void main(String[] args)throws Exception {
 		exitIfIncorrectArguments(args);
@@ -93,7 +93,7 @@ public class TextBuddy {
 	}
 	
 	// Read the contents of the file and store into allTexts arraylist before the user enters any commands
-	private static void readFile(String filename)throws Exception {
+	public static void readFile(String filename)throws Exception {
 		File file = new File (filename);
 		if(!file.exists()){
 			file.createNewFile();
@@ -133,86 +133,121 @@ public class TextBuddy {
 	 * will then be written into the file.   
 	 */
 	private static void readCommandUntilExit()throws Exception{	
-		command = readCommand();
 		
-		while(!command.equalsIgnoreCase(EXIT)){
-			
-			if(command.equalsIgnoreCase(ADD)){
-				addText();
-			} else if(command.equalsIgnoreCase(DISPLAY)){
-				displayText();
-			} else if(command.equalsIgnoreCase(DELETE)){
-				deleteText();
-			} else if(command.equalsIgnoreCase(CLEAR)){
-				clearText();
-			} else if(command.equalsIgnoreCase(EXIT)){
-				System.exit(0);
-			} else {
-				printMessage(ERROR_INVALID_COMMAND);
-			}
-			
+		while (true){
+			String input = readCommand();
+			String output = executeCommand(input);
+			printMessage(output);
 			writeFile(filename);
-			command = readCommand();
 		}
 	}
 	
 	private static String readCommand(){
 		System.out.print("command: ");
-		return scanner.next();
+		return scanner.nextLine();
+	}
+	
+	public static String executeCommand(String input){
+		String displayMessage = null;
+		command = getFirstWord(input);
+		
+		if(command.equalsIgnoreCase(ADD)){
+			displayMessage = addText(removeFirstWord(input));
+		} else if(command.equalsIgnoreCase(DISPLAY)){
+			displayMessage = displayText();
+		} else if(command.equalsIgnoreCase(DELETE)){
+			displayMessage = deleteText(removeFirstWord(input));
+		} else if(command.equalsIgnoreCase(CLEAR)){
+			displayMessage = clearText();
+		} else if(command.equalsIgnoreCase(EXIT)){
+			System.exit(0);
+		} else {
+			displayMessage = ERROR_INVALID_COMMAND;
+		}
+		
+		return displayMessage;
 	}
 	 
-	private static void addText(){
-		String text = scanner.nextLine().trim();
-		
+	private static String removeFirstWord(String userInput) {
+		String withoutFirstWord = userInput.replace(getFirstWord(userInput), "").trim();
+		return withoutFirstWord;
+	}
+
+	private static String getFirstWord(String userInput) {
+		String firstWord = userInput.trim().split("\\s+")[0];
+		return firstWord;
+	}
+	
+	public static String addText(String text){
+		 text = text.trim();
+		 String addResult = null;
+		 
 		if(text.equals("")) {
-			printMessage(ERROR_INVALID_FORMAT);
+			addResult = ERROR_INVALID_FORMAT;
 		} else {
 			allTexts.add(text);
-			printMessage(String.format(MESSAGE_ADD, filename, text));
+			addResult = String.format(MESSAGE_ADD, filename, text);
 		}
+		
+		return addResult;
 	}
 	
-	private static void displayText(){
-		scanner.nextLine();
+	public static String displayText(){
+		String displayResult = null;
 		
 		if(allTexts.size() == 0){
-			printMessage(String.format(MESSAGE_EMPTY, filename));
+			displayResult = String.format(MESSAGE_EMPTY, filename);
 		} else {
-			printAllTexts();
+			displayResult = storeAllTexts();
 		}
+		
+		return displayResult;
 	}
 	
-	private static void printAllTexts(){
+	private static String storeAllTexts(){
+		String mergeTexts = "";
+		
 		for(int i = 0; i < allTexts.size(); i++){
 			int index = i + 1;
-			System.out.println(index + ". " + allTexts.get(i));
+			
+			if(i == allTexts.size() - 1){
+				mergeTexts = mergeTexts + index + ". " + allTexts.get(i);
+			}
+			else {
+				mergeTexts = mergeTexts + index + ". " + allTexts.get(i)+ "\n";
+			}
 		}
+		
+		return mergeTexts;
 	}
 	
-	private static void deleteText(){
+	public static String deleteText(String text){
 		try {
-			int index = scanner.nextInt();
+			String deleteResult = null;
+			int index = Integer.parseInt(text);
 			index = index - 1;
 		
 			if(allTexts.size() == 0) {
-				printMessage(String.format(MESSAGE_EMPTY, filename));
+				deleteResult = String.format(MESSAGE_EMPTY, filename);
 			} else if(index >= allTexts.size() || index < 0){
-				printMessage(ERROR_INDEX_OUT_OF_RANGE);
+				deleteResult = ERROR_INDEX_OUT_OF_RANGE;
 			} else {
-				String text = allTexts.get(index);
+				text = allTexts.get(index);
 				allTexts.remove(index);
-				printMessage(String.format(MESSAGE_DELETE, filename, text));
+				deleteResult = String.format(MESSAGE_DELETE, filename, text);
 			}
+		
+			return deleteResult;
+			
 		} catch (InputMismatchException e){
-			printMessage(ERROR_INVALID_FORMAT);
-			return;
+			return ERROR_INVALID_FORMAT;
 		}
 	}
 	
-	private static void clearText(){
-		scanner.nextLine();
+	public static String clearText(){
 		allTexts.clear();
-		printMessage(String.format(MESSAGE_CLEAR, filename));
+		String clearResult = String.format(MESSAGE_CLEAR, filename);
+		return clearResult;
 	}
 	
 	private static void printMessage(String message){
