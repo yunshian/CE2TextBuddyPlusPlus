@@ -4,7 +4,7 @@ import java.io.*;
 /**
  * @author Toh Yun Shian
  * 
- * TextBuddy is a program where user can conduct the following commands: add, delete, clear and display text.
+ * TextBuddy is a program where user can conduct the following commands: add, delete, clear, display, sort and search text.
  * All texts will be stored into an arraylist called allTexts.
  * The file will be saved to the disk after each user operation. 
  * 
@@ -57,12 +57,14 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE = "deleted from %s: \"%s\".";
 	private static final String MESSAGE_CLEAR = "all content deleted from %s.";
 	private static final String MESSAGE_EMPTY = "%s is empty.";
+	private static final String MESSAGE_SORT = "%s is now sort alphabetically.";
 
 	// Commands
 	private static final String ADD = "add";
 	private static final String DISPLAY = "display";
 	private static final String DELETE = "delete";
 	private static final String CLEAR = "clear";
+	private static final String SORT = "sort";
 	private static final String EXIT = "exit";
 	
 	private static Scanner scanner = new Scanner(System.in);
@@ -159,6 +161,8 @@ public class TextBuddy {
 			displayMessage = deleteText(removeFirstWord(input));
 		} else if(command.equalsIgnoreCase(CLEAR)){
 			displayMessage = clearText();
+		} else if(command.equalsIgnoreCase(SORT)){
+			displayMessage = sortText();
 		} else if(command.equalsIgnoreCase(EXIT)){
 			System.exit(0);
 		} else {
@@ -248,6 +252,18 @@ public class TextBuddy {
 		allTexts.clear();
 		String clearResult = String.format(MESSAGE_CLEAR, filename);
 		return clearResult;
+	}
+	
+	public static String sortText(){
+		String sortResult = null;
+		
+		if(allTexts.size() == 0){
+			sortResult = String.format(MESSAGE_EMPTY, filename);
+		} else {
+			Collections.sort(allTexts);
+			sortResult = String.format(MESSAGE_SORT, filename);
+		}
+		return sortResult;
 	}
 	
 	private static void printMessage(String message){
