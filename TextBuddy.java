@@ -148,7 +148,7 @@ public class TextBuddy {
 			} else if(command.equalsIgnoreCase(EXIT)){
 				System.exit(0);
 			} else {
-				System.out.println(ERROR_INVALID_COMMAND);
+				printMessage(ERROR_INVALID_COMMAND);
 			}
 			
 			writeFile(filename);
@@ -165,10 +165,10 @@ public class TextBuddy {
 		String text = scanner.nextLine().trim();
 		
 		if(text.equals("")) {
-			System.out.println(ERROR_INVALID_FORMAT);
+			printMessage(ERROR_INVALID_FORMAT);
 		} else {
 			allTexts.add(text);
-			System.out.println(String.format(MESSAGE_ADD, filename, text));
+			printMessage(String.format(MESSAGE_ADD, filename, text));
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class TextBuddy {
 		scanner.nextLine();
 		
 		if(allTexts.size() == 0){
-			System.out.println(String.format(MESSAGE_EMPTY, filename));
+			printMessage(String.format(MESSAGE_EMPTY, filename));
 		} else {
 			printAllTexts();
 		}
@@ -195,16 +195,16 @@ public class TextBuddy {
 			index = index - 1;
 		
 			if(allTexts.size() == 0) {
-				System.out.println(String.format(MESSAGE_EMPTY, filename));
+				printMessage(String.format(MESSAGE_EMPTY, filename));
 			} else if(index >= allTexts.size() || index < 0){
-				System.out.println(ERROR_INDEX_OUT_OF_RANGE);
+				printMessage(ERROR_INDEX_OUT_OF_RANGE);
 			} else {
 				String text = allTexts.get(index);
 				allTexts.remove(index);
-				System.out.println(String.format(MESSAGE_DELETE, filename, text));
+				printMessage(String.format(MESSAGE_DELETE, filename, text));
 			}
 		} catch (InputMismatchException e){
-			System.out.println(ERROR_INVALID_FORMAT);
+			printMessage(ERROR_INVALID_FORMAT);
 			return;
 		}
 	}
@@ -212,6 +212,10 @@ public class TextBuddy {
 	private static void clearText(){
 		scanner.nextLine();
 		allTexts.clear();
-		System.out.println(String.format(MESSAGE_CLEAR, filename));
+		printMessage(String.format(MESSAGE_CLEAR, filename));
+	}
+	
+	private static void printMessage(String message){
+		System.out.println(message);
 	}
 }
