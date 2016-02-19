@@ -61,4 +61,14 @@ public class TextBuddyPlusTest extends TextBuddy {
 		output = TextBuddy.sortText();
 		assertEquals(MESSAGE_EMPTY,output);
 	}
+	
+	@Test
+	public void testSearchText(){
+		TextBuddy.addText("corn");
+		TextBuddy.addText("barrel");
+		TextBuddy.addText("airport");
+		TextBuddy.addText("apple");
+		output = TextBuddy.searchText("air");
+		assertEquals("List of texts containing air:\n3. airport\n",output);
+	}
 }
