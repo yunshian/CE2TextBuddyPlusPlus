@@ -260,7 +260,7 @@ public class TextBuddy {
 		if(allTexts.size() == 0){
 			sortResult = String.format(MESSAGE_EMPTY, filename);
 		} else {
-			Collections.sort(allTexts);
+			Collections.sort(allTexts, String.CASE_INSENSITIVE_ORDER);
 			sortResult = String.format(MESSAGE_SORT, filename);
 		}
 		return sortResult;
