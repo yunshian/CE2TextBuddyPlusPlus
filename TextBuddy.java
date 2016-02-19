@@ -137,8 +137,8 @@ public class TextBuddy {
 	
 	/*
 	 * Execution of all commands are done within the allTexts arraylist
-	 * After each command user has entered, contents from allTexts arraylist 
-	 * will then be written into the file.   
+	 * After each command (add, display, delete, clear and sort) user has entered, 
+	 * contents from allTexts arraylist will then be written into the file.   
 	 */
 	private static void readCommandUntilExit()throws Exception{	
 		
@@ -146,7 +146,6 @@ public class TextBuddy {
 			String input = readCommand();
 			String output = executeCommand(input);
 			printMessage(output);
-			writeFile(filename);
 		}
 	}
 	
@@ -155,20 +154,25 @@ public class TextBuddy {
 		return scanner.nextLine();
 	}
 	
-	public static String executeCommand(String input){
+	public static String executeCommand(String input) throws Exception{
 		String displayMessage = null;
 		command = getFirstWord(input);
 		
 		if(command.equalsIgnoreCase(ADD)){
 			displayMessage = addText(removeFirstWord(input));
+			writeFile(filename);
 		} else if(command.equalsIgnoreCase(DISPLAY)){
 			displayMessage = displayText();
+			writeFile(filename);
 		} else if(command.equalsIgnoreCase(DELETE)){
 			displayMessage = deleteText(removeFirstWord(input));
+			writeFile(filename);
 		} else if(command.equalsIgnoreCase(CLEAR)){
 			displayMessage = clearText();
+			writeFile(filename);
 		} else if(command.equalsIgnoreCase(SORT)){
 			displayMessage = sortText();
+			writeFile(filename);
 		} else if(command.equalsIgnoreCase(SEARCH)){
 			displayMessage = searchText(removeFirstWord(input));
 		} else if(command.equalsIgnoreCase(EXIT)){
