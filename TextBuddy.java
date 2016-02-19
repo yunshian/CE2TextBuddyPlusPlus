@@ -40,6 +40,8 @@ import java.io.*;
  	  
 	4. Command Letter Casing -- Program will be able to accept commands in any letter case: capital, small and mixed.
  	   Eg. ADD, add, Add
+ 	   
+ 	5. Sorting Command -- Sorting will ignore upper and lower case
  */
 
 public class TextBuddy {
@@ -58,6 +60,7 @@ public class TextBuddy {
 	private static final String MESSAGE_CLEAR = "all content deleted from %s.";
 	private static final String MESSAGE_EMPTY = "%s is empty.";
 	private static final String MESSAGE_SORT = "%s is now sort alphabetically.";
+	private static final String MESSAGE_SEARCH = "List of texts containing %s:";
 
 	// Commands
 	private static final String ADD = "add";
@@ -65,6 +68,7 @@ public class TextBuddy {
 	private static final String DELETE = "delete";
 	private static final String CLEAR = "clear";
 	private static final String SORT = "sort";
+	private static final String SEARCH = "search";
 	private static final String EXIT = "exit";
 	
 	private static Scanner scanner = new Scanner(System.in);
@@ -163,6 +167,8 @@ public class TextBuddy {
 			displayMessage = clearText();
 		} else if(command.equalsIgnoreCase(SORT)){
 			displayMessage = sortText();
+		} else if(command.equalsIgnoreCase(SEARCH)){
+			displayMessage = searchText(removeFirstWord(input));
 		} else if(command.equalsIgnoreCase(EXIT)){
 			System.exit(0);
 		} else {
@@ -264,6 +270,33 @@ public class TextBuddy {
 			sortResult = String.format(MESSAGE_SORT, filename);
 		}
 		return sortResult;
+	}
+	
+	public static String searchText(String keyword){
+		String searchResult = null;
+		
+		if(allTexts.size() == 0){
+			searchResult = String.format(MESSAGE_EMPTY, filename);
+		} else {
+			searchResult = findTextWithKeyword(keyword);
+		}
+		return searchResult;
+	}
+	
+	private static String findTextWithKeyword(String keyword){
+		String mergeTexts = String.format(MESSAGE_SEARCH, keyword);
+		mergeTexts = mergeTexts + "\n";
+
+		for(int i = 0; i < allTexts.size(); i++){
+			int index = i + 1;
+			String text = allTexts.get(i);
+			
+			if(text.contains(keyword)) {
+				mergeTexts = mergeTexts + index + ". " + allTexts.get(i)+ "\n";
+			}
+		}
+		
+		return mergeTexts;
 	}
 	
 	private static void printMessage(String message){
