@@ -137,7 +137,7 @@ public class TextBuddy {
 	
 	/*
 	 * Execution of all commands are done within the allTexts arraylist
-	 * After each command (add, display, delete, clear and sort) user has entered, 
+	 * After each command (add, delete, clear and sort) user has entered, 
 	 * contents from allTexts arraylist will then be written into the file.   
 	 */
 	private static void readCommandUntilExit()throws Exception{	
@@ -163,7 +163,6 @@ public class TextBuddy {
 			writeFile(filename);
 		} else if(command.equalsIgnoreCase(DISPLAY)){
 			displayMessage = displayText();
-			writeFile(filename);
 		} else if(command.equalsIgnoreCase(DELETE)){
 			displayMessage = deleteText(removeFirstWord(input));
 			writeFile(filename);
