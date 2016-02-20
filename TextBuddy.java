@@ -214,13 +214,13 @@ public class TextBuddy {
 		if(allTexts.size() == 0){
 			displayResult = String.format(MESSAGE_EMPTY, filename);
 		} else {
-			displayResult = storeAllTexts();
+			displayResult = getAllTexts();
 		}
 		
 		return displayResult;
 	}
 	
-	private static String storeAllTexts(){
+	private static String getAllTexts(){
 		String mergeTexts = "";
 		
 		for(int i = 0; i < allTexts.size(); i++){
